@@ -10375,6 +10375,7 @@ Get-DnsClientDohServerAddress
                 
                 // Zapret Otomatik Kurulum için özel blockcheck-hidden.cmd dosyasını kullan
                 var blockcheckCmdPath = Path.Combine(localZapretPath, "blockcheck", "blockcheck-hidden.cmd");
+                SplitWireX.XConsole.PrepareHiddenBlockcheck(blockcheckCmdPath); // SplitWireX: no bash window
                 AppendLogSafe(zapretLogPath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Blockcheck-hidden.cmd çalıştırılıyor: {blockcheckCmdPath}\n");
                 
                 // Blockcheck process'ini çalıştır ve bash.exe'nin kapanmasını bekle
@@ -11199,11 +11200,15 @@ echo Hizmet kurulum işlemi tamamlandı.
                 {
                     FileName = "cmd.exe",
                     Arguments = $"/c \"\"{onetimeBatchPath}\" {parameters}\"",
-                    UseShellExecute = true,
+                    // SplitWireX: run hidden (no terminal window); stop it from the SplitWireX panel
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardInput = true,
                     WorkingDirectory = Path.GetDirectoryName(onetimeBatchPath)
                 };
 
                 using var process = Process.Start(psi);
+                SplitWireX.XConsole.TrackOneTime("Zapret", process);
                 if (process != null)
                 {
                     AppendLogSafe(zapretLogPath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] onetime_batch.cmd başlatıldı. Process ID: {process.Id}\n");
@@ -12979,6 +12984,7 @@ echo Hizmet kurulum işlemi tamamlandı.
                 
                 // Zapret2 Otomatik Kurulum için özel blockcheck2-hidden.cmd dosyasını kullan
                 var blockcheck2CmdPath = Path.Combine(localZapret2Path, "blockcheck2", "blockcheck-hidden.cmd");
+                SplitWireX.XConsole.PrepareHiddenBlockcheck(blockcheck2CmdPath); // SplitWireX: no bash window
                 AppendLogSafe(zapret2LogPath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Blockcheck2-hidden.cmd çalıştırılıyor: {blockcheck2CmdPath}\n");
 
                 // Tarama seviyesine göre "yeter sayıda strateji bulununca dur" hedefi -- bkz.
@@ -14251,11 +14257,15 @@ echo Hizmet kurulum işlemi tamamlandı.
                 {
                     FileName = "cmd.exe",
                     Arguments = $"/c \"\"{onetimeBatchPath}\" {parameters}\"",
-                    UseShellExecute = true,
+                    // SplitWireX: run hidden (no terminal window); stop it from the SplitWireX panel
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardInput = true,
                     WorkingDirectory = Path.GetDirectoryName(onetimeBatchPath)
                 };
 
                 using var process = Process.Start(psi);
+                SplitWireX.XConsole.TrackOneTime("Zapret2", process);
                 if (process != null)
                 {
                     AppendLogSafe(zapret2LogPath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] onetime_batch.cmd başlatıldı. Process ID: {process.Id}\n");
@@ -15628,7 +15638,9 @@ echo Hizmet kurulum işlemi tamamlandı.
                 // Template dosyasını oku ve parametreleri değiştir
                 var templateContent = await File.ReadAllTextAsync(batchTemplatePath);
                 var modifiedContent = templateContent.Replace("*parameters*", parameters);
-                
+                // SplitWireX: "start" would open a new visible console; run goodbyedpi inside our hidden one
+                modifiedContent = modifiedContent.Replace("start \"\" goodbyedpi.exe", "goodbyedpi.exe");
+
                 // Geçici dosya oluştur
                 var tempBatchPath = Path.Combine(localGoodbyeDPIPath, "temp_batch.cmd");
                 await File.WriteAllTextAsync(tempBatchPath, modifiedContent);
@@ -15638,11 +15650,15 @@ echo Hizmet kurulum işlemi tamamlandı.
                 {
                     FileName = "cmd.exe",
                     Arguments = $"/c \"\"{tempBatchPath}\"\"",
-                    UseShellExecute = true,
+                    // SplitWireX: run hidden (no terminal window); stop it from the SplitWireX panel
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardInput = true,
                     WorkingDirectory = localGoodbyeDPIPath
                 };
 
                 using var process = Process.Start(psi);
+                SplitWireX.XConsole.TrackOneTime("GoodbyeDPI", process);
                 if (process != null)
                 {
                     // Tek seferlik çalıştırma olduğu için process'i bekleme

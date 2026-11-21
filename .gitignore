@@ -1,0 +1,4 @@
+bin/
+obj/
+release/
+src/Prerequisites/.NET 8.0/*.exe

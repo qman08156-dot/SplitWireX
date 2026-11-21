@@ -1,0 +1,420 @@
+<Window x:Class="SplitWireTurkey.SplitWireX.XPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SplitWireX"
+        Width="352"
+        SizeToContent="Height"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="Manual"
+        UseLayoutRounding="True"
+        TextOptions.TextFormattingMode="Display"
+        FontFamily="{StaticResource PoppinsRegular}"
+        FontSize="12">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="XBg" Color="#16191F"/>
+        <SolidColorBrush x:Key="XSurface" Color="#1F242C"/>
+        <SolidColorBrush x:Key="XSurfaceHi" Color="#2A303A"/>
+        <SolidColorBrush x:Key="XBorder" Color="#2C323C"/>
+        <SolidColorBrush x:Key="XText" Color="#E9EEF4"/>
+        <SolidColorBrush x:Key="XMuted" Color="#8892A2"/>
+        <SolidColorBrush x:Key="XAccent" Color="#3DD6C4"/>
+        <SolidColorBrush x:Key="XAccentHi" Color="#62E4D5"/>
+        <SolidColorBrush x:Key="XOnAccent" Color="#06201D"/>
+        <SolidColorBrush x:Key="XDanger" Color="#FF6B6B"/>
+        <SolidColorBrush x:Key="XOk" Color="#3DDC84"/>
+        <SolidColorBrush x:Key="XWarn" Color="#F5B94A"/>
+        <SolidColorBrush x:Key="XOff" Color="#4A5361"/>
+        <FontFamily x:Key="XIcons">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+        <Duration x:Key="XFast">0:0:0.1</Duration>
+
+        <!-- icon button -->
+        <Style x:Key="XIcon" TargetType="Button">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Foreground" Value="{StaticResource XMuted}"/>
+            <Setter Property="FontFamily" Value="{StaticResource XIcons}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" Background="Transparent" CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="{StaticResource XSurfaceHi}"/>
+                                <Setter Property="Foreground" Value="{StaticResource XText}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- tabs -->
+        <Style x:Key="XTab" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{StaticResource XMuted}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="GroupName" Value="xtabs"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="b" Background="Transparent" CornerRadius="7" Padding="0,5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource XText}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="{StaticResource XSurfaceHi}"/>
+                                <Setter Property="Foreground" Value="{StaticResource XAccent}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- buttons -->
+        <Style x:Key="XButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource XSurfaceHi}"/>
+            <Setter Property="Foreground" Value="{StaticResource XText}"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="b" Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="b" Property="Opacity" Value="0.35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="XPrimary" TargetType="Button" BasedOn="{StaticResource XButton}">
+            <Setter Property="Background" Value="{StaticResource XAccent}"/>
+            <Setter Property="Foreground" Value="{StaticResource XOnAccent}"/>
+            <Setter Property="FontFamily" Value="{StaticResource PoppinsBold}"/>
+        </Style>
+        <Style x:Key="XTrash" TargetType="Button" BasedOn="{StaticResource XButton}">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Foreground" Value="{StaticResource XDanger}"/>
+            <Setter Property="FontFamily" Value="{StaticResource XIcons}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Content" Value="&#xE74D;"/>
+        </Style>
+
+        <!-- switch -->
+        <Style x:Key="XSwitch" TargetType="ToggleButton">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter VerticalAlignment="Center" TextElement.Foreground="{StaticResource XText}"/>
+                            <Border x:Name="track" Grid.Column="1" Width="32" Height="18" CornerRadius="9" Background="{StaticResource XOff}">
+                                <Ellipse x:Name="knob" Width="12" Height="12" Fill="White" HorizontalAlignment="Left" Margin="3,0"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="track" Property="Background" Value="{StaticResource XAccent}"/>
+                                <Setter TargetName="knob" Property="HorizontalAlignment" Value="Right"/>
+                                <Setter TargetName="knob" Property="Fill" Value="{StaticResource XOnAccent}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- combo -->
+        <Style x:Key="XComboItem" TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="{StaticResource XText}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="b" Padding="9,5" CornerRadius="6" Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="{StaticResource XSurfaceHi}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource XAccent}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="XCombo" TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="ItemContainerStyle" Value="{StaticResource XComboItem}"/>
+            <Setter Property="MaxDropDownHeight" Value="220"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Focusable="False" ClickMode="Press"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="b" Background="{StaticResource XSurface}" BorderBrush="{StaticResource XBorder}"
+                                                BorderThickness="1" CornerRadius="8">
+                                            <TextBlock Text="&#xE70D;" FontFamily="{StaticResource XIcons}" FontSize="9"
+                                                       Foreground="{StaticResource XMuted}" HorizontalAlignment="Right"
+                                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource XMuted}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <TextBlock IsHitTestVisible="False" Margin="10,0,26,0" VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis" Foreground="{StaticResource XText}"
+                                       Text="{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom"
+                                   AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
+                                <Border Background="{StaticResource XSurface}" BorderBrush="{StaticResource XBorder}" BorderThickness="1"
+                                        CornerRadius="8" Padding="3" Margin="0,3,0,0"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border x:Name="Root" Margin="10" CornerRadius="14" Background="{StaticResource XBg}"
+            BorderBrush="{StaticResource XBorder}" BorderThickness="1">
+        <Border.RenderTransform>
+            <TranslateTransform x:Name="RootShift"/>
+        </Border.RenderTransform>
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="14" ShadowDepth="2" Opacity="0.45" RenderingBias="Performance"/>
+        </Border.Effect>
+
+        <Grid Margin="12,8,12,12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- header: logo, name, status pill, full window, quit -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center" FontFamily="{StaticResource PoppinsBold}" FontSize="14"
+                           Foreground="{StaticResource XText}">
+                    <Run Text="SplitWire"/><Run Text="X" Foreground="{StaticResource XAccent}"/>
+                </TextBlock>
+
+                <Border Grid.Column="1" x:Name="StatusPill" HorizontalAlignment="Left" Margin="10,0,6,0"
+                        Padding="8,2,9,2" CornerRadius="10" Background="{StaticResource XSurface}">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse x:Name="StatusDot" Width="7" Height="7" Fill="{StaticResource XOff}"
+                                 VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock x:Name="StatusText" Text="…" FontSize="11" Foreground="{StaticResource XMuted}"
+                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="120"/>
+                    </StackPanel>
+                </Border>
+
+                <Button Grid.Column="2" Style="{StaticResource XIcon}" Content="&#xE713;"
+                        ToolTip="Full SplitWire" Click="BtnFull_Click"/>
+                <Button Grid.Column="3" Style="{StaticResource XIcon}" Content="&#xE7E8;"
+                        ToolTip="Quit" Click="BtnQuit_Click"/>
+            </Grid>
+
+            <!-- busy line: always takes 2px, so nothing jumps -->
+            <ProgressBar Grid.Row="1" x:Name="BusyLine" Height="2" Margin="0,8,0,8" IsIndeterminate="False"
+                         Opacity="0" Foreground="{StaticResource XAccent}" Background="Transparent" BorderThickness="0"/>
+
+            <!-- tabs -->
+            <Border Grid.Row="2" x:Name="TabsHost" Background="{StaticResource XSurface}" CornerRadius="9" Padding="3" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Grid.Column="0" x:Name="TabWireSock" Style="{StaticResource XTab}" Content="WireSock" Checked="Tab_Checked"/>
+                    <RadioButton Grid.Column="1" x:Name="TabByeDPI" Style="{StaticResource XTab}" Content="ByeDPI" Checked="Tab_Checked"/>
+                    <RadioButton Grid.Column="2" x:Name="TabZapret" Style="{StaticResource XTab}" Content="Zapret" Checked="Tab_Checked"/>
+                    <RadioButton Grid.Column="3" x:Name="TabZapret2" Style="{StaticResource XTab}" Content="Zapret2" Checked="Tab_Checked"/>
+                    <RadioButton Grid.Column="4" x:Name="TabGdpi" Style="{StaticResource XTab}" Content="GDPI" Checked="Tab_Checked" ToolTip="GoodbyeDPI"/>
+                    <RadioButton Grid.Column="5" x:Name="TabTools" Style="{StaticResource XTab}" Content="&#xE90F;"
+                                 FontFamily="{StaticResource XIcons}" Checked="Tab_Checked" ToolTip="Tools"/>
+                </Grid>
+            </Border>
+
+            <!-- pages share one cell; inactive ones are Hidden (not Collapsed) so the height never changes -->
+            <Grid Grid.Row="3" x:Name="Pages">
+
+                <StackPanel x:Name="PageWireSock">
+                    <ToggleButton x:Name="WsBrowsers" Style="{StaticResource XSwitch}" Content="Browsers too"/>
+                    <ToggleButton x:Name="WsRepeater" Style="{StaticResource XSwitch}" Content="Auto-restart"/>
+                    <Grid Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="WsStandard" Style="{StaticResource XPrimary}" Content="Install"/>
+                        <Button Grid.Column="2" x:Name="WsAlternative" Style="{StaticResource XButton}" Content="Alternative"/>
+                        <Button Grid.Column="4" x:Name="WsRemove" Style="{StaticResource XTrash}" ToolTip="Remove WireSock"/>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel x:Name="PageByeDPI" Visibility="Hidden">
+                    <ToggleButton x:Name="BdBrowsers" Style="{StaticResource XSwitch}" Content="Browsers too"/>
+                    <Grid Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="BdSetup" Style="{StaticResource XPrimary}" Content="Install"/>
+                        <Button Grid.Column="2" x:Name="BdDll" Style="{StaticResource XButton}" Content="DLL mode"
+                                ToolTip="Discord only (drover)"/>
+                        <Button Grid.Column="4" x:Name="BdRemove" Style="{StaticResource XTrash}" ToolTip="Remove ByeDPI"/>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel x:Name="PageZapret" Visibility="Hidden">
+                    <ComboBox x:Name="ZpPreset" Style="{StaticResource XCombo}" Margin="0,0,0,8" ToolTip="Preset"/>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="ZpService" Style="{StaticResource XPrimary}" Content="Install"/>
+                        <Button Grid.Column="2" x:Name="ZpOnce" Style="{StaticResource XButton}" Content="Run once"/>
+                        <Button Grid.Column="4" x:Name="ZpRemove" Style="{StaticResource XTrash}" ToolTip="Remove Zapret"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox x:Name="ZpScan" Style="{StaticResource XCombo}" ToolTip="Scan depth"/>
+                        <Button Grid.Column="2" x:Name="ZpAuto" Style="{StaticResource XButton}" Content="Auto scan"
+                                ToolTip="Find the best settings and install"/>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel x:Name="PageZapret2" Visibility="Hidden">
+                    <ComboBox x:Name="Z2Preset" Style="{StaticResource XCombo}" Margin="0,0,0,8" ToolTip="Preset"/>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="Z2Service" Style="{StaticResource XPrimary}" Content="Install"/>
+                        <Button Grid.Column="2" x:Name="Z2Once" Style="{StaticResource XButton}" Content="Run once"/>
+                        <Button Grid.Column="4" x:Name="Z2Remove" Style="{StaticResource XTrash}" ToolTip="Remove Zapret2"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox x:Name="Z2Scan" Style="{StaticResource XCombo}" ToolTip="Scan depth"/>
+                        <Button Grid.Column="2" x:Name="Z2Auto" Style="{StaticResource XButton}" Content="Auto scan"
+                                ToolTip="Find the best settings and install"/>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel x:Name="PageGdpi" Visibility="Hidden">
+                    <ComboBox x:Name="GdPreset" Style="{StaticResource XCombo}" Margin="0,0,0,8" ToolTip="Preset"/>
+                    <ToggleButton x:Name="GdBlacklist" Style="{StaticResource XSwitch}" Content="Blacklist only"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="GdService" Style="{StaticResource XPrimary}" Content="Install"/>
+                        <Button Grid.Column="2" x:Name="GdOnce" Style="{StaticResource XButton}" Content="Run once"/>
+                        <Button Grid.Column="4" x:Name="GdRemove" Style="{StaticResource XTrash}" ToolTip="Remove GoodbyeDPI"/>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel x:Name="PageTools" Visibility="Hidden">
+                    <UniformGrid Columns="2" Margin="0,0,0,6">
+                        <Button x:Name="TlDiscordRepair" Style="{StaticResource XButton}" Content="Repair Discord" Margin="0,0,3,0"/>
+                        <Button x:Name="TlResetDns" Style="{StaticResource XButton}" Content="Reset DNS" Margin="3,0,0,0"/>
+                    </UniformGrid>
+                    <Button x:Name="TlRemoveAll" Style="{StaticResource XButton}" Foreground="{StaticResource XDanger}"
+                            Content="Remove all services"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

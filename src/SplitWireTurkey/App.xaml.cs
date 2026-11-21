@@ -48,6 +48,21 @@ namespace SplitWireTurkey
                 Shutdown();
                 return;
             }
+
+            // SplitWireX: compact tray panel on top of the original SplitWire.
+            //   --classic  -> original big window only (still without terminal windows)
+            //   --tray     -> start silently in the tray (panel opens on icon click)
+            bool classic = Array.Exists(e.Args, a => a.Equals("--classic", StringComparison.OrdinalIgnoreCase));
+            bool tray = Array.Exists(e.Args, a => a.Equals("--tray", StringComparison.OrdinalIgnoreCase));
+            if (classic)
+            {
+                SplitWireX.XConsole.StartConsoleGuard();
+                new MainWindow().Show();
+            }
+            else
+            {
+                SplitWireX.XShell.Start(showPanel: !tray);
+            }
         }
 
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
